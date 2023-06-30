@@ -4,9 +4,8 @@ import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 import { db } from "../firebase";
 
-const Chats = () => {
+const Chats = ({changeState}) => {
   const [chats, setChats] = useState([]);
-
   const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
 
@@ -29,8 +28,10 @@ const Chats = () => {
   };
 
   return (
-    <div className="chats">
-      {Object.entries(chats)
+    
+    <div className="chats" onClick={()=>changeState(true)}>
+    {chats !== undefined 
+    ?Object.entries(chats)
         ?.sort((a, b) => b[1].date - a[1].date)
         .map((chat) => (
           <div
@@ -38,14 +39,16 @@ const Chats = () => {
             key={chat[0]}
             onClick={() => handleSelect(chat[1].userInfo)}
           >
-            <img src={chat[1].userInfo.photoURL} alt="" />
+            <img src={chat[1].userInfo.photoURL} alt="" className="profilepic"/>
             <div className="userChatInfo">
-              <span>{chat[1].userInfo.displayName}</span>
-              <p>{chat[1].lastMessage?.text}</p>
+              <span style={{textTransform:"capitalize",fontWeight:"bold"}}>{chat[1].userInfo.displayName}</span>
+              {chat[1].lastMessage?.text.length<80?<p>{chat[1].lastMessage?.text}</p>:<p>{chat[1].lastMessage?.text.substring(0,80) }...</p>}
             </div>
           </div>
-        ))}
+        ))
+    :null}
     </div>
+    
   );
 };
 

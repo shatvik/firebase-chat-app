@@ -3,6 +3,11 @@ import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 
 const Message = ({ message }) => {
+  let value = new Date(message.date.seconds*1000);
+  let hh = value.getHours().toString().padStart(2,'0')
+  let mm = value.getMinutes().toString().padStart(2,'0')
+  // console.log(value)
+
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
 
@@ -25,12 +30,16 @@ const Message = ({ message }) => {
               : data.user.photoURL
           }
           alt=""
+          style={{width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                objectFit: "cover"}}
         />
-        <span>just now</span>
+        <span>{hh}:{mm}</span>
       </div>
       <div className="messageContent">
-        <p>{message.text}</p>
-        {<img src={message.img} alt="" />}
+        {message.text?<p>{message.text}</p>:null}
+        {message.img?<div><img src={message.img} alt=""/></div>:null}
       </div>
     </div>
   );

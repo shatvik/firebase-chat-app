@@ -21,7 +21,11 @@ const Input = () => {
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
 
+  const handleSubmit = (e) => {
+    e.code === "Enter" && handleSend();
+  };
   const handleSend = async () => {
+    // console.log(img)
     if (img) {
       const storageRef = ref(storage, uuid());
 
@@ -30,6 +34,7 @@ const Input = () => {
       uploadTask.on(
         (error) => {
           //TODO:Handle Error
+          // console.warn(error)
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -80,9 +85,10 @@ const Input = () => {
         placeholder="Type something..."
         onChange={(e) => setText(e.target.value)}
         value={text}
+        onKeyDown={handleSubmit}
       />
       <div className="send">
-        <img src={Attach} alt="" />
+        <img src={Attach} alt="" className="attachpic" />
         <input
           type="file"
           style={{ display: "none" }}
@@ -90,9 +96,19 @@ const Input = () => {
           onChange={(e) => setImg(e.target.files[0])}
         />
         <label htmlFor="file">
-          <img src={Img} alt="" />
+          <img src={Img} alt="" className="attachpic" />
         </label>
-        <button onClick={handleSend}>Send</button>
+        <button
+          onClick={handleSend}
+          className="logoutbtn"
+          style={{
+            backgroundColor: "#2768e9",
+            marginLeft: "10px",
+            padding: "8px",
+          }}
+        >
+          ➤
+        </button>
       </div>
     </div>
   );

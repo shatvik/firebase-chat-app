@@ -87,12 +87,12 @@ const Search = () => {
           value={username}
         />
       </div>
-      {err && <span>User not found!</span>}
+      {err && <span className="errorMessage">User not found!</span>}
       {user && (
         <div className="userChat" onClick={handleSelect}>
-          <img src={user.photoURL} alt="" />
+          <img src={user.photoURL} alt="" className="profilepic"/>
           <div className="userChatInfo">
-            <span>{user.displayName}</span>
+            <span style={{textTransform:"capitalize"}}>{user.displayName}</span>
           </div>
         </div>
       )}
